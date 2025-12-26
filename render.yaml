@@ -1,0 +1,96 @@
+services:
+  # Backend API
+  - type: web
+    name: winadeal-backend
+    runtime: node
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: winadeal-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: OTP_EXPIRES_IN
+        value: "10"
+      - key: CORS_ORIGIN
+        value: "*"
+
+  # Admin Panel
+  - type: web
+    name: winadeal-admin
+    runtime: static
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: admin-panel
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://winadeal-backend.onrender.com/api/v1
+
+  # Vendor Panel
+  - type: web
+    name: winadeal-vendor
+    runtime: static
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: vendor-panel
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://winadeal-backend.onrender.com/api/v1
+
+  # Customer Web
+  - type: web
+    name: winadeal-customer
+    runtime: static
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: customer-web
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://winadeal-backend.onrender.com/api/v1
+
+  # Delivery Web
+  - type: web
+    name: winadeal-delivery
+    runtime: static
+    region: oregon
+    plan: free
+    branch: main
+    rootDir: delivery-web
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://winadeal-backend.onrender.com/api/v1
+
+databases:
+  - name: winadeal-db
+    plan: free
+    region: oregon
+    databaseName: winadeal
+    user: winadeal

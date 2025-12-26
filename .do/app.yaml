@@ -1,0 +1,99 @@
+name: winadeal
+region: nyc
+
+databases:
+  - name: winadeal-db
+    engine: PG
+    version: "15"
+    size: db-s-1vcpu-1gb
+    num_nodes: 1
+
+services:
+  # Backend API
+  - name: backend
+    source_dir: backend
+    github:
+      repo: tararajc-gif/winadeal
+      branch: main
+      deploy_on_push: true
+    build_command: npm install && npx prisma generate && npm run build
+    run_command: npm run start
+    http_port: 5000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /api/v1/health
+    envs:
+      - key: NODE_ENV
+        value: "production"
+      - key: PORT
+        value: "5000"
+      - key: DATABASE_URL
+        value: ${winadeal-db.DATABASE_URL}
+      - key: JWT_SECRET
+        value: "CHANGE_THIS_TO_SECURE_RANDOM_STRING_MIN_32_CHARS"
+        type: SECRET
+      - key: JWT_REFRESH_SECRET
+        value: "CHANGE_THIS_TO_DIFFERENT_SECURE_RANDOM_STRING_MIN_32_CHARS"
+        type: SECRET
+      - key: JWT_EXPIRES_IN
+        value: "15m"
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: "7d"
+      - key: OTP_EXPIRES_IN
+        value: "10"
+      - key: CORS_ORIGIN
+        value: "*"
+
+static_sites:
+  # Admin Panel
+  - name: admin-panel
+    source_dir: admin-panel
+    github:
+      repo: tararajc-gif/winadeal
+      branch: main
+      deploy_on_push: true
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_URL
+        value: ${backend.PUBLIC_URL}/api/v1
+
+  # Vendor Panel
+  - name: vendor-panel
+    source_dir: vendor-panel
+    github:
+      repo: tararajc-gif/winadeal
+      branch: main
+      deploy_on_push: true
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_URL
+        value: ${backend.PUBLIC_URL}/api/v1
+
+  # Customer Web
+  - name: customer-web
+    source_dir: customer-web
+    github:
+      repo: tararajc-gif/winadeal
+      branch: main
+      deploy_on_push: true
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_URL
+        value: ${backend.PUBLIC_URL}/api/v1
+
+  # Delivery Web
+  - name: delivery-web
+    source_dir: delivery-web
+    github:
+      repo: tararajc-gif/winadeal
+      branch: main
+      deploy_on_push: true
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_URL
+        value: ${backend.PUBLIC_URL}/api/v1
