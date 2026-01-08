@@ -1,0 +1,27 @@
+
+model CityCommission {
+  id                      String   @id @default(uuid())
+  city                    String   @unique
+  
+  // Vendor commission (percentage of order subtotal)
+  vendorCommissionRate    Float    @default(10.0) // Default 10%
+  
+  // Delivery partner commission (percentage of delivery fee)
+  deliveryCommissionRate  Float    @default(15.0) // Default 15%
+  
+  // Optional: Minimum order amount for this city
+  minOrderAmount          Float?
+  
+  // Optional: Base delivery fee for this city
+  baseDeliveryFee         Float?
+  
+  // Optional: Per km delivery fee for this city
+  perKmDeliveryFee        Float?
+  
+  isActive                Boolean  @default(true)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  
+  @@index([city])
+  @@index([isActive])
+}

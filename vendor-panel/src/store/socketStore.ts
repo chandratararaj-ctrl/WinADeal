@@ -1,12 +1,26 @@
-
 import { create } from 'zustand';
 
+interface SocketEvent {
+    type: string;
+    payload: any;
+    timestamp: number;
+}
+
 interface SocketState {
-    lastEvent: { type: string; data: any } | null;
-    setLastEvent: (type: string, data: any) => void;
+    isConnected: boolean;
+    lastEvent: SocketEvent | null;
+    setConnectionStatus: (status: boolean) => void;
+    setLastEvent: (event: SocketEvent) => void;
 }
 
 export const useSocketStore = create<SocketState>((set) => ({
+    isConnected: false,
     lastEvent: null,
-    setLastEvent: (type, data) => set({ lastEvent: { type, data } }),
+    setConnectionStatus: (status) => set({ isConnected: status }),
+    setLastEvent: (event) => set({
+        lastEvent: {
+            ...event,
+            timestamp: Date.now()
+        }
+    }),
 }));

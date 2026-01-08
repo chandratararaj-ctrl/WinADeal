@@ -113,17 +113,17 @@
 
 #### Week 9: Advanced Order Management
 - [ ] Scheduled orders
-- [ ] Order cancellation & refunds
-- [ ] Ratings & reviews
+- [x] Order cancellation & refunds
+- [x] Ratings & reviews
 - [ ] In-app chat
 - [ ] Multi-language support
 
 #### Week 10: Business Features
-- [ ] Coupon/promo system
+- [x] Coupon/promo system
 - [ ] Commission management
 - [ ] Surge pricing
-- [ ] Analytics dashboard
-- [ ] Reports (CSV export)
+- [x] Analytics dashboard
+- [x] Reports (CSV export)
 
 #### Week 11: Mobile Apps (React Native)
 - [ ] Customer app (Android/iOS)

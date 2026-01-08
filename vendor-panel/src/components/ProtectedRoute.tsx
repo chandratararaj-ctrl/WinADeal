@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+    if (allowedRoles && user && !allowedRoles.includes(user.selectedRole)) {
         // User is authenticated but doesn't have the right role
         return <Navigate to="/unauthorized" replace />;
     }

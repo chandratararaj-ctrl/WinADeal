@@ -1,0 +1,37 @@
+// Add this to the end of schema.prisma
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  TIMED_OUT
+  EXPIRED
+}
+
+model DeliveryRequest {
+  id                String          @id @default(uuid())
+  orderId           String
+  order             Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  deliveryPartnerId String
+  deliveryPartner   DeliveryPartner @relation(fields: [deliveryPartnerId], references: [id])
+  status            RequestStatus   @default(PENDING)
+  
+  // Timer logic
+  createdAt         DateTime        @default(now())
+  expiresAt         DateTime        // When this specific request times out
+  respondedAt       DateTime?       // When partner accepted/rejected
+  
+  // Assignment logic
+  isExclusive       Boolean         @default(true) // True for round-robin, False for broadcast
+  attemptNumber     Int             @default(1)    // Which attempt in the sequence
+  
+  // Penalty tracking
+  penaltyApplied    Boolean         @default(false)
+  penaltyAmount     Float           @default(0)
+  
+  @@index([orderId])
+  @@index([deliveryPartnerId])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([createdAt])
+}

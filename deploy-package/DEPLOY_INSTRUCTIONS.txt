@@ -1,0 +1,93 @@
+﻿# WinADeal Azure Deployment Instructions
+
+## Your Configuration
+- Azure VM IP: 20.197.4.187
+- Deployment Package: e:\Project\webDevelop\WinADeal\deploy-package
+
+## Next Steps
+
+### 1. Upload to Azure VM
+
+From PowerShell:
+cd e:\Project\webDevelop\WinADeal\deploy-package
+scp -r * Sanju@20.197.4.187:/var/www/winadeal/
+
+### 2. SSH into Azure VM
+
+ssh Sanju@20.197.4.187
+
+### 3. Setup Backend
+
+cd /var/www/winadeal/backend
+
+# Copy production env
+cp .env.production .env
+
+# IMPORTANT: Edit .env and update:
+# 1. Database password
+# 2. JWT secrets (generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
+nano .env
+
+# Install dependencies
+npm install --production
+
+# Run migrations
+npx prisma migrate deploy
+npx prisma generate
+
+### 4. Start Backend with PM2
+
+cd /var/www/winadeal
+
+# Install PM2
+sudo npm install -g pm2
+
+# Create logs directory
+mkdir -p logs
+
+# Start backend
+pm2 start ecosystem.config.js
+
+# Save PM2 config
+pm2 save
+
+# Setup PM2 startup
+pm2 startup
+# Run the command that PM2 outputs
+
+### 5. Build Customer Frontend
+
+cd /var/www/winadeal/customer-web
+
+# Install and build
+npm install
+npm run build
+
+### 6. Configure Nginx
+
+See AZURE_DEPLOYMENT_GUIDE.md for Nginx configuration.
+
+### 7. Test
+
+Open browser: http://20.197.4.187
+
+## Important Files Created
+
+- backend/.env.production - Backend environment (EDIT THIS!)
+- customer-web/.env - Frontend environment
+- ecosystem.config.js - PM2 configuration
+
+## Security Reminders
+
+BEFORE DEPLOYING:
+1. Change database password in backend/.env
+2. Generate new JWT secrets
+3. Review all environment variables
+4. Never commit .env files to Git
+
+## Support
+
+See these files for detailed instructions:
+- AZURE_DEPLOYMENT_GUIDE.md
+- AZURE_DEPLOYMENT_CHECKLIST.md
+- .agent/workflows/azure-deploy.md
