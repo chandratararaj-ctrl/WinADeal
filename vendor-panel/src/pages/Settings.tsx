@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { MapPin, Save, Store, Clock, Phone, Mail, Navigation } from 'lucide-react';
+import { MapPin, Save, Store, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
 import { shopService } from '../services/shop.service'; // Ensure this is exported from shop.service
 import { getCurrentUser } from '../services/auth.service';
-import type { ShopSettings } from '../types';
+// import type { ShopSettings } from '../types';
 import DocumentUpload from '../components/DocumentUpload';
 import { FileText } from 'lucide-react';
 import MapPicker from '../components/MapPicker';
@@ -319,22 +319,22 @@ export default function Settings() {
                         <DocumentUpload
                             label="GST Certificate"
                             type="GST_CERTIFICATE"
-                            onUploadComplete={(url) => toast.success('GST Certificate Updated')}
+                            onUploadComplete={() => toast.success('GST Certificate Updated')}
                         />
                         <DocumentUpload
                             label="FSSAI License"
                             type="FSSAI_LICENSE"
-                            onUploadComplete={(url) => toast.success('FSSAI License Updated')}
+                            onUploadComplete={() => toast.success('FSSAI License Updated')}
                         />
                         <DocumentUpload
                             label="Shop License"
                             type="SHOP_LICENSE"
-                            onUploadComplete={(url) => toast.success('Shop License Updated')}
+                            onUploadComplete={() => toast.success('Shop License Updated')}
                         />
                         <DocumentUpload
                             label="ID Proof (Aadhar/PAN)"
                             type="ID_PROOF"
-                            onUploadComplete={(url) => toast.success('ID Proof Updated')}
+                            onUploadComplete={() => toast.success('ID Proof Updated')}
                         />
                     </div>
                 </div>

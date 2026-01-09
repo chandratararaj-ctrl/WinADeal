@@ -90,7 +90,7 @@ const Orders: React.FC = () => {
         if (lastEvent?.type === 'new_order') {
             // Play sound for new order
             soundService.playNewOrderSound();
-            toast.order.newOrder(lastEvent.data?.orderNumber || 'New');
+            toast.order.newOrder(lastEvent.payload?.orderNumber || 'New');
             fetchOrders(true);
         } else if (lastEvent?.type === 'order_update') {
             fetchOrders(true);

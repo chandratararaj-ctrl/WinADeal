@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Phone, Lock, Hash, ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { requestOTP, resetPassword } from '../services/auth.service';
 
 export default function ForgotPassword() {
-    const navigate = useNavigate();
     const [step, setStep] = useState<'REQUEST' | 'VERIFY' | 'SUCCESS'>('REQUEST');
     const [loading, setLoading] = useState(false);
 

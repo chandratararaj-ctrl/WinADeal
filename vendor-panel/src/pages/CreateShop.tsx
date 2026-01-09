@@ -30,7 +30,7 @@ export default function CreateShop() {
 
     useEffect(() => {
         loadCategories();
-        loadCities();
+        fetchCities();
     }, []);
 
     const loadCategories = async () => {
@@ -44,9 +44,11 @@ export default function CreateShop() {
         }
     };
 
-    const fetchCities = async () => { // Renamed from loadCities to fetchCities
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+
+    const fetchCities = async () => {
         try {
-            const response = await fetch(`${API_URL}/cities/active`); // Changed endpoint to /active
+            const response = await fetch(`${API_URL}/cities/active`);
             const result = await response.json();
             if (result.success && Array.isArray(result.data)) {
                 setCities(result.data.map((city: any) => city.name));

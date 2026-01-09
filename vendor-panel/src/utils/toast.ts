@@ -1,5 +1,4 @@
 import toast, { type ToastOptions } from 'react-hot-toast';
-import { CheckCircle, XCircle, AlertCircle, Info, Loader2 } from 'lucide-react';
 
 const defaultOptions: ToastOptions = {
     duration: 4000,
@@ -217,10 +216,10 @@ export const deliveryNotifications = {
         showSuccess(`Delivery started for Order #${orderId}`),
 
     deliveryCompleted: (orderId: string, earnings: number) =>
-        showSuccess(`Delivery completed! Earned ₹${earnings} 💰`),
+        showSuccess(`Delivery for Order #${orderId} completed! Earned ₹${earnings} 💰`),
 
     deliveryFailed: (orderId: string, reason: string) =>
-        showError(`Delivery failed: ${reason}`),
+        showError(`Delivery for Order #${orderId} failed: ${reason}`),
 };
 
 // Auth notifications
