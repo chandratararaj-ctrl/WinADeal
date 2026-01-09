@@ -37,7 +37,7 @@ export const registerDeliveryPartner = asyncHandler(async (req: Request, res: Re
     // Let's ensure user role is DELIVERY.
     await prisma.user.update({
         where: { id: userId },
-        data: { role: 'DELIVERY' },
+        data: { roles: ['DELIVERY'] },
     });
 
     successResponse(res, partner, 'Delivery partner registration submitted', 201);

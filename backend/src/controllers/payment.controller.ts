@@ -58,9 +58,9 @@ export const createPaymentOrder = asyncHandler(async (req: Request, res: Respons
             name: 'WinADeal',
             description: `Order #${order.orderNumber}`,
             prefill: {
-                name: req.user?.name,
-                email: req.user?.email || '',
-                contact: req.user?.phone || ''
+                name: (req.user as any)?.name,
+                email: (req.user as any)?.email || '',
+                contact: (req.user as any)?.phone || ''
             }
         });
     } catch (error) {

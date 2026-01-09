@@ -27,10 +27,11 @@ export const comparePassword = async (
  */
 export const generateAccessToken = (userId: string, roles: string[], selectedRole?: string): string => {
     const activeRole = selectedRole || roles[0];
+    const options: jwt.SignOptions = { expiresIn: (process.env.JWT_EXPIRES_IN || '15m') as any };
     return jwt.sign(
         { userId, roles, selectedRole: activeRole },
-        process.env.JWT_SECRET || 'your-secret-key',
-        { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
+        (process.env.JWT_SECRET || 'your-secret-key') as any,
+        options
     );
 };
 
@@ -38,10 +39,11 @@ export const generateAccessToken = (userId: string, roles: string[], selectedRol
  * Generate JWT refresh token
  */
 export const generateRefreshToken = (userId: string): string => {
+    const options: jwt.SignOptions = { expiresIn: (process.env.JWT_REFRESH_EXPIRES_IN || '7d') as any };
     return jwt.sign(
         { userId },
-        process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key',
-        { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
+        (process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key') as any,
+        options
     );
 };
 

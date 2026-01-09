@@ -126,7 +126,7 @@ export const getCommissionRates = asyncHandler(async (req: Request, res: Respons
             isActive: true,
             createdAt: new Date(),
             updatedAt: new Date()
-        };
+        } as any;
     }
 
     successResponse(res, commission, 'Commission rates fetched successfully');

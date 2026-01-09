@@ -481,7 +481,6 @@ export const getMe = async (req: Request, res: Response) => {
                     id: true,
                     isOnline: true,
                     vehicleType: true,
-                    licenseNumber: true,
                     isVerified: true
                 }
             });
