@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Navigation, Package, Phone, CheckCircle, MapPin, Navigation2, Radio } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { deliveryService } from '../services/delivery.service';
-import trackingService from '../services/tracking.service';
 import { useAuthStore } from '../store/authStore';
 import { useSocketStore } from '../store/socketStore';
 import { useLocationTracker } from '../hooks/useLocationTracker';
@@ -24,7 +23,7 @@ export default function Dashboard() {
     const lastEvent = useSocketStore((state) => state.lastEvent);
 
     // Use location tracker hook
-    const { isTracking, currentLocation, startTracking, stopTracking } = useLocationTracker({
+    const { isTracking, currentLocation, stopTracking } = useLocationTracker({
         deliveryId: trackingDeliveryId,
         enabled: !!trackingDeliveryId,
         updateInterval: 10000 // Update every 10 seconds
