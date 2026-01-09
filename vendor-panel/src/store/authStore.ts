@@ -15,6 +15,7 @@ interface User {
         city?: string;
         isVerified: boolean;
         isActive: boolean;
+        isOpen?: boolean;
         rating: number;
         rejectionReason?: string | null;
     } | null;

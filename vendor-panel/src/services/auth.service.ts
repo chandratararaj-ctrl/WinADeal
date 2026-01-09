@@ -25,8 +25,18 @@ export interface AuthResponse {
         name: string;
         phone: string;
         email?: string;
-        role: string;
+        roles: string[];
+        selectedRole: string;
         isVerified: boolean;
+        shop?: {
+            id: string;
+            name: string;
+            city?: string;
+            isVerified: boolean;
+            isActive: boolean;
+            rating: number;
+            rejectionReason?: string | null;
+        } | null;
     };
     accessToken: string;
     refreshToken: string;

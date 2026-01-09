@@ -4,12 +4,10 @@ import {
     Package,
     DollarSign,
     TrendingUp,
-    TrendingDown,
     Store,
     Clock,
     CheckCircle,
     AlertTriangle,
-    Users,
     Star,
     Activity,
     Calendar,
@@ -221,10 +219,12 @@ const Dashboard: React.FC = () => {
                                 onClick={async () => {
                                     try {
                                         const { updateShop } = await import('../services/shop.service');
-                                        await updateShop(shop.id, { isOpen: !shop.isOpen });
-                                        const userData = await getCurrentUser();
-                                        updateUser(userData);
-                                        toast.success(shop.isOpen ? 'Shop closed' : 'Shop opened');
+                                        if (shop) {
+                                            await updateShop(shop.id, { isOpen: !shop.isOpen });
+                                            const userData = await getCurrentUser();
+                                            updateUser(userData);
+                                            toast.success(shop.isOpen ? 'Shop closed' : 'Shop opened');
+                                        }
                                     } catch (error) {
                                         toast.error('Failed to update shop status');
                                     }

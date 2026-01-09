@@ -17,6 +17,8 @@ export interface CreateShopData {
     latitude?: number;
     longitude?: number;
     image?: string;
+    isActive?: boolean;
+    isOpen?: boolean;
 }
 
 export const createShop = async (data: CreateShopData) => {
