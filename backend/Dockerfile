@@ -22,5 +22,5 @@ RUN npm run build
 # Expose port
 EXPOSE 5000
 
-# Start command
-CMD ["npm", "start"]
+# Start command (run migrations first, then start server)
+CMD sh -c "npx prisma migrate deploy && npm start"
