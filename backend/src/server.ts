@@ -67,10 +67,10 @@ if (process.env.NODE_ENV === 'development') {
 
 // Root endpoint
 app.get('/', (_req: Request, res: Response) => {
-    const adminUrl = process.env.ADMIN_PANEL_URL || '#';
-    const customerUrl = process.env.CUSTOMER_WEB_URL || '#';
-    const vendorUrl = process.env.VENDOR_PANEL_URL || '#';
-    const deliveryUrl = process.env.DELIVERY_PANEL_URL || '#';
+    const adminUrl = process.env.ADMIN_PANEL_URL || 'http://uoog04kg4kgks80cckk4wg04.20.193.142.10.sslip.io';
+    const customerUrl = process.env.CUSTOMER_WEB_URL || 'http://w4o4c44o0oc0g0cg8w4gs8ko.20.193.142.10.sslip.io';
+    const vendorUrl = process.env.VENDOR_PANEL_URL || 'http://s8sg8844wwo8ss8gs4w4k4ks.20.193.142.10.sslip.io';
+    const deliveryUrl = process.env.DELIVERY_PANEL_URL || 'http://xgk48c0wgco8wos0wwgocww0.20.193.142.10.sslip.io';
 
     const html = `
     <!DOCTYPE html>
