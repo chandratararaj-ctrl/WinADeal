@@ -34,7 +34,8 @@ app.use(cors({
             'http://localhost:5173', // Delivery App or Local Fallback
         ];
 
-        if (allowedOrigins.includes(origin)) {
+        // Allow sslip.io domains (Coolify generated domains)
+        if (origin.endsWith('.sslip.io') || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
