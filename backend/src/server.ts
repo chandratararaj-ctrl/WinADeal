@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === 'development') {
 // ============================================
 
 // Root endpoint
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
     res.status(200).json({
         success: true,
         message: '🛒 Welcome to WinADeal API',
@@ -82,7 +82,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Health check endpoint
-app.get('/health', (req: Request, res: Response) => {
+app.get('/health', (_req: Request, res: Response) => {
     res.status(200).json({
         status: 'OK',
         message: 'WinADeal API is running',
@@ -92,7 +92,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // API v1 routes
-app.get('/api/v1', (req: Request, res: Response) => {
+app.get('/api/v1', (_req: Request, res: Response) => {
     res.status(200).json({
         message: 'WinADeal API v1',
         version: '1.0.0',
@@ -171,7 +171,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // Global error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
     console.error('Error:', err);
 
     res.status(500).json({
