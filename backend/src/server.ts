@@ -66,26 +66,27 @@ if (process.env.NODE_ENV === 'development') {
 // ============================================
 
 // Root endpoint
-// Use hardcoded production URLs or fallback to env/localhost for dev
-const isProd = process.env.NODE_ENV === 'production';
+app.get('/', (_req: Request, res: Response) => {
+    // Use hardcoded production URLs or fallback to env/localhost for dev
+    const isProd = process.env.NODE_ENV === 'production';
 
-const adminUrl = isProd
-    ? 'http://uoog04kg4kgks80cckk4wg04.20.193.142.10.sslip.io'
-    : (process.env.ADMIN_PANEL_URL || 'http://localhost:3000');
+    const adminUrl = isProd
+        ? 'http://uoog04kg4kgks80cckk4wg04.20.193.142.10.sslip.io'
+        : (process.env.ADMIN_PANEL_URL || 'http://localhost:3000');
 
-const customerUrl = isProd
-    ? 'http://w4o4c44o0oc0g0cg8w4gs8ko.20.193.142.10.sslip.io'
-    : (process.env.CUSTOMER_WEB_URL || 'http://localhost:3001');
+    const customerUrl = isProd
+        ? 'http://w4o4c44o0oc0g0cg8w4gs8ko.20.193.142.10.sslip.io'
+        : (process.env.CUSTOMER_WEB_URL || 'http://localhost:3001');
 
-const vendorUrl = isProd
-    ? 'http://s8sg8844wwo8ss8gs4w4k4ks.20.193.142.10.sslip.io'
-    : (process.env.VENDOR_PANEL_URL || 'http://localhost:5176');
+    const vendorUrl = isProd
+        ? 'http://s8sg8844wwo8ss8gs4w4k4ks.20.193.142.10.sslip.io'
+        : (process.env.VENDOR_PANEL_URL || 'http://localhost:5176');
 
-const deliveryUrl = isProd
-    ? 'http://xgk48c0wgco8wos0wwgocww0.20.193.142.10.sslip.io'
-    : (process.env.DELIVERY_PANEL_URL || 'http://localhost:5177');
+    const deliveryUrl = isProd
+        ? 'http://xgk48c0wgco8wos0wwgocww0.20.193.142.10.sslip.io'
+        : (process.env.DELIVERY_PANEL_URL || 'http://localhost:5177');
 
-const html = `
+    const html = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -224,7 +225,7 @@ const html = `
     </html>
     `;
 
-res.send(html);
+    res.send(html);
 });
 
 // Health check endpoint
