@@ -322,6 +322,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 
 import http from 'http';
 import { socketService } from './services/socket.service';
+import { seedDatabase } from './utils/seeder';
 
 // ... (existing code)
 
@@ -330,6 +331,9 @@ const server = http.createServer(app);
 
 // Initialize Socket.io
 socketService.init(server);
+
+// Auto-seed database if empty
+seedDatabase().catch(console.error);
 
 // ============================================
 // START SERVER
