@@ -14,10 +14,10 @@ class WebSocketService {
     private reconnectAttempts: number = 0;
     private maxReconnectAttempts: number = 5;
     private reconnectDelay: number = 3000;
-    private reconnectTimer: NodeJS.Timeout | null = null;
+    private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
     private messageHandlers: Map<EventType, Set<MessageHandler>> = new Map();
     private isIntentionallyClosed: boolean = false;
-    private heartbeatInterval: NodeJS.Timeout | null = null;
+    private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
     private heartbeatTimeout: number = 30000; // 30 seconds
 
     constructor(baseUrl: string) {

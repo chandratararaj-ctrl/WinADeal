@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, MapPin, Building2, Users } from 'lucide-react';
 import { cityService } from '../services/city.service';
-import Toast from '../utils/Toast';
+import Toast from '../utils/toast';
 
 interface City {
     id: string;
