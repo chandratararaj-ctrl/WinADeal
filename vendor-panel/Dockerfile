@@ -26,7 +26,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port (Coolify might expect a different one, verify later, defaulting to 80 for now but we can adjust to 80 or 3000)
 # We should probably match the others but let's stick to 80 for standard nginx unless configured otherwise.
-EXPOSE 80
+EXPOSE 5176
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
