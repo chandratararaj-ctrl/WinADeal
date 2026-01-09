@@ -3,14 +3,13 @@ import { Star, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface RatingModalProps {
-    orderId: string;
     orderNumber: string;
     shopName: string;
     onClose: () => void;
     onSubmit: (rating: number, review: string, deliveryRating: number) => Promise<void>;
 }
 
-export default function RatingModal({ orderId, orderNumber, shopName, onClose, onSubmit }: RatingModalProps) {
+export default function RatingModal({ orderNumber, shopName, onClose, onSubmit }: RatingModalProps) {
     const [shopRating, setShopRating] = useState(0);
     const [deliveryRating, setDeliveryRating] = useState(0);
     const [hoveredShopStar, setHoveredShopStar] = useState(0);
@@ -69,8 +68,8 @@ export default function RatingModal({ orderId, orderNumber, shopName, onClose, o
                     >
                         <Star
                             className={`w-10 h-10 ${star <= (hovered || rating)
-                                    ? 'text-yellow-400 fill-current'
-                                    : 'text-gray-300'
+                                ? 'text-yellow-400 fill-current'
+                                : 'text-gray-300'
                                 } transition-colors`}
                         />
                     </button>

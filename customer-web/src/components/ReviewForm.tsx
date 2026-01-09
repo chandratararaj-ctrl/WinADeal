@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Star, Upload, X } from 'lucide-react';
+import { Star, Upload } from 'lucide-react';
 import { reviewService, type CreateReviewData } from '../services/review.service';
 import { toast } from 'react-hot-toast';
 
@@ -16,7 +16,7 @@ export default function ReviewForm({ orderId, shopId, shopName, onSuccess, onCan
     const [productRating, setProductRating] = useState(0);
     const [deliveryRating, setDeliveryRating] = useState(0);
     const [comment, setComment] = useState('');
-    const [images, setImages] = useState<string[]>([]);
+    const [images] = useState<string[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -76,8 +76,8 @@ export default function ReviewForm({ orderId, shopId, shopName, onSuccess, onCan
                     >
                         <Star
                             className={`w-8 h-8 ${star <= value
-                                    ? 'fill-yellow-400 text-yellow-400'
-                                    : 'text-gray-300'
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'text-gray-300'
                                 }`}
                         />
                     </button>

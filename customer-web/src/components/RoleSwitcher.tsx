@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { authService } from '../services/auth.service';
 import { RefreshCw, UserCircle, Briefcase } from 'lucide-react';

@@ -29,8 +29,8 @@ export default function ReviewList({ reviews, showVendorResponse = true }: Revie
                 <Star
                     key={star}
                     className={`w-4 h-4 ${star <= rating
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-300'
                         }`}
                 />
             ))}
@@ -107,7 +107,7 @@ export default function ReviewList({ reviews, showVendorResponse = true }: Revie
                     {/* Images */}
                     {review.images && review.images.length > 0 && (
                         <div className="flex gap-2 mb-4">
-                            {review.images.map((image, index) => (
+                            {review.images.map((image: string, index: number) => (
                                 <img
                                     key={index}
                                     src={image}
