@@ -1,6 +1,10 @@
 declare namespace Express {
     export interface Request {
-        user?: any;
+        user?: {
+            userId: string;
+            roles: string[];
+            selectedRole: string;
+        };
         files?: any;
     }
     export namespace Multer {

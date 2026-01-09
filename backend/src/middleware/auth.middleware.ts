@@ -3,18 +3,7 @@ import { verifyToken } from '../utils/auth';
 import { errorResponse } from '../utils/helpers';
 import prisma from '../config/database';
 
-// Extend Express Request type to include user
-declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                userId: string;
-                roles: string[];      // Array of all roles user has
-                selectedRole: string; // Currently active role
-            };
-        }
-    }
-}
+// Request type extension is now handled in types.d.ts
 
 /**
  * Authenticate user with JWT token
