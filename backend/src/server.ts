@@ -66,19 +66,151 @@ if (process.env.NODE_ENV === 'development') {
 
 // Root endpoint
 app.get('/', (_req: Request, res: Response) => {
-    res.status(200).json({
-        success: true,
-        message: '🛒 Welcome to WinADeal API',
-        version: '1.0.0',
-        description: 'Multi-Vendor Delivery Platform API',
-        endpoints: {
-            health: '/health',
-            api: '/api/v1',
-            auth: '/api/v1/auth',
-            documentation: 'Coming soon',
-        },
-        timestamp: new Date().toISOString(),
-    });
+    const adminUrl = process.env.ADMIN_PANEL_URL || '#';
+    const customerUrl = process.env.CUSTOMER_WEB_URL || '#';
+    const vendorUrl = process.env.VENDOR_PANEL_URL || '#';
+    const deliveryUrl = process.env.DELIVERY_PANEL_URL || '#';
+
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WinADeal - Portal Hub</title>
+        <style>
+            :root {
+                --primary: #6366f1;
+                --surface: #ffffff;
+                --bg: #f3f4f6;
+                --text: #1f2937;
+            }
+            body {
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                background-color: var(--bg);
+                color: var(--text);
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+                padding: 2rem;
+            }
+            .container {
+                max-width: 1000px;
+                width: 100%;
+                text-align: center;
+            }
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+                color: #111827;
+            }
+            .subtitle {
+                color: #6b7280;
+                margin-bottom: 3rem;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+            .card {
+                background: var(--surface);
+                padding: 2rem;
+                border-radius: 1rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s, box-shadow 0.2s;
+                text-decoration: none;
+                color: inherit;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+            .card-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+            .card-title {
+                font-weight: 600;
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
+            .card-desc {
+                color: #6b7280;
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            .status-badge {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 500;
+                background-color: #d1fae5;
+                color: #065f46;
+                margin-top: 1rem;
+            }
+            .footer {
+                margin-top: 4rem;
+                color: #9ca3af;
+                font-size: 0.875rem;
+            }
+            .api-link {
+                color: var(--primary);
+                font-weight: 500;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>WinADeal Ecosystem</h1>
+            <p class="subtitle">Select a portal to access the platform</p>
+
+            <div class="grid">
+                <a href="${customerUrl}" class="card" target="_blank">
+                    <div class="card-icon">🛍️</div>
+                    <div class="card-title">Customer App</div>
+                    <div class="card-desc">Browse products, place orders, and track deliveries.</div>
+                    <span class="status-badge">Public Access</span>
+                </a>
+
+                <a href="${adminUrl}" class="card" target="_blank">
+                    <div class="card-icon">⚙️</div>
+                    <div class="card-title">Admin Console</div>
+                    <div class="card-desc">Manage users, shops, settings, and view system analytics.</div>
+                    <span class="status-badge">Restricted</span>
+                </a>
+
+                <a href="${vendorUrl}" class="card" target="_blank">
+                    <div class="card-icon">🏪</div>
+                    <div class="card-title">Vendor Portal</div>
+                    <div class="card-desc">Manage your shop, inventory, and incoming orders.</div>
+                    <span class="status-badge">Restricted</span>
+                </a>
+
+                <a href="${deliveryUrl}" class="card" target="_blank">
+                    <div class="card-icon">🛵</div>
+                    <div class="card-title">Delivery Partner</div>
+                    <div class="card-desc">Accept orders and manage delivery routes.</div>
+                    <span class="status-badge">Mobile / Web</span>
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>Backend API Status: <span style="color: #10b981;">Online</span> • v1.0.0</p>
+                <p>Health Check: <a href="/health" class="api-link">/health</a></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    `;
+
+    res.send(html);
 });
 
 // Health check endpoint
