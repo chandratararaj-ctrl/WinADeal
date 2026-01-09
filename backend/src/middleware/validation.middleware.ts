@@ -24,5 +24,5 @@ export const handleValidationErrors = (
         return errorResponse(res, 'Validation failed', 400, formattedErrors);
     }
 
-    next();
+    return next();
 };

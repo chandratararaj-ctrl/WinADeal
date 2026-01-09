@@ -9,7 +9,7 @@ import {
     generateOTP,
     getOTPExpiry,
 } from '../utils/auth';
-import { successResponse, errorResponse, ApiError } from '../utils/helpers';
+import { successResponse, errorResponse } from '../utils/helpers';
 
 /**
  * Register a new user

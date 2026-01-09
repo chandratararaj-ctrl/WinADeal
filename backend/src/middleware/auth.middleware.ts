@@ -89,7 +89,7 @@ export const authenticate = async (
             selectedRole: req.user.selectedRole
         });
 
-        next();
+        return next();
     } catch (error: any) {
         console.error('Authentication error:', error);
         return errorResponse(res, 'Invalid or expired token', 401);
@@ -130,7 +130,7 @@ export const authorize = (...allowedRoles: string[]) => {
         }
 
         console.log('[AUTH] Authorization successful for role:', req.user.selectedRole);
-        next();
+        return next();
     };
 };
 
@@ -170,9 +170,9 @@ export const optionalAuth = async (
             }
         }
 
-        next();
+        return next();
     } catch (error) {
         // Continue without authentication
-        next();
+        return next();
     }
 };
