@@ -13,7 +13,7 @@ export const useSocket = () => {
     const { token, refreshToken, isAuthenticated, setAuth, clearAuth } = useAuthStore();
     const socketRef = useRef<Socket | null>(null);
     const reconnectAttemptsRef = useRef(0);
-    const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Refresh token and reconnect
     const refreshTokenAndReconnect = useCallback(async () => {

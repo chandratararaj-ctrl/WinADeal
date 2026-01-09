@@ -10,7 +10,7 @@ interface SocketState {
     isConnected: boolean;
     lastEvent: SocketEvent | null;
     setConnectionStatus: (status: boolean) => void;
-    setLastEvent: (event: SocketEvent) => void;
+    setLastEvent: (event: Omit<SocketEvent, 'timestamp'> & { timestamp?: number }) => void;
 }
 
 export const useSocketStore = create<SocketState>((set) => ({
@@ -20,7 +20,7 @@ export const useSocketStore = create<SocketState>((set) => ({
     setLastEvent: (event) => set({
         lastEvent: {
             ...event,
-            timestamp: Date.now()
+            timestamp: event.timestamp || Date.now()
         }
     }),
 }));

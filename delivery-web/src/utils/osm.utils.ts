@@ -15,8 +15,8 @@ export interface Coordinates {
 }
 
 export interface GeocodingResult {
-  lat: number;
-  lon: number;
+  lat: string;
+  lon: string;
   display_name: string;
   address?: {
     road?: string;
@@ -43,12 +43,12 @@ export async function geocodeAddress(address: string): Promise<Coordinates | nul
   try {
     const response = await fetch(
       `${NOMINATIM_BASE}/search?` +
-        new URLSearchParams({
-          q: address,
-          format: 'json',
-          limit: '1',
-          addressdetails: '1',
-        }),
+      new URLSearchParams({
+        q: address,
+        format: 'json',
+        limit: '1',
+        addressdetails: '1',
+      }),
       {
         headers: {
           'User-Agent': 'WinADeal-Platform/1.0', // Required by Nominatim
@@ -86,12 +86,12 @@ export async function reverseGeocode(
   try {
     const response = await fetch(
       `${NOMINATIM_BASE}/reverse?` +
-        new URLSearchParams({
-          lat: lat.toString(),
-          lon: lng.toString(),
-          format: 'json',
-          addressdetails: '1',
-        }),
+      new URLSearchParams({
+        lat: lat.toString(),
+        lon: lng.toString(),
+        format: 'json',
+        addressdetails: '1',
+      }),
       {
         headers: {
           'User-Agent': 'WinADeal-Platform/1.0',
@@ -125,11 +125,11 @@ export async function calculateRoute(
 
     const response = await fetch(
       `${OSRM_BASE}/route/v1/driving/${coords}?` +
-        new URLSearchParams({
-          overview: 'full',
-          geometries: 'geojson',
-          steps: 'false',
-        })
+      new URLSearchParams({
+        overview: 'full',
+        geometries: 'geojson',
+        steps: 'false',
+      })
     );
 
     if (!response.ok) {
