@@ -39,7 +39,7 @@ export const createAddress = asyncHandler(async (req: Request, res: Response) =>
         },
     });
 
-    successResponse(res, address, 'Address created successfully', 201);
+    return successResponse(res, address, 'Address created successfully', 201);
 });
 
 // Get all addresses for user
@@ -51,7 +51,7 @@ export const getMyAddresses = asyncHandler(async (req: Request, res: Response) =
         orderBy: { isDefault: 'desc' }, // Default address first
     });
 
-    successResponse(res, addresses);
+    return successResponse(res, addresses);
 });
 
 // Update address
@@ -91,7 +91,7 @@ export const updateAddress = asyncHandler(async (req: Request, res: Response) =>
         },
     });
 
-    successResponse(res, updatedAddress, 'Address updated successfully');
+    return successResponse(res, updatedAddress, 'Address updated successfully');
 });
 
 // Delete address
@@ -111,5 +111,5 @@ export const deleteAddress = asyncHandler(async (req: Request, res: Response) =>
         where: { id },
     });
 
-    successResponse(res, null, 'Address deleted successfully');
+    return successResponse(res, null, 'Address deleted successfully');
 });

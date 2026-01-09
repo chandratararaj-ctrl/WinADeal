@@ -54,7 +54,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Request logging middleware (development)
 if (process.env.NODE_ENV === 'development') {
-    app.use((req: Request, res: Response, next: NextFunction) => {
+    app.use((req: Request, _res: Response, next: NextFunction) => {
         console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
         next();
     });

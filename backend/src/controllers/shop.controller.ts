@@ -4,7 +4,7 @@ import { asyncHandler, successResponse, errorResponse } from '../utils/helpers';
 
 // Get all shops
 export const getShops = asyncHandler(async (req: Request, res: Response) => {
-    const { search, categoryId, isOpen, latitude, longitude, page = 1, limit = 20, isVerified } = req.query;
+    const { search, categoryId, isOpen, page = 1, limit = 20, isVerified } = req.query;
 
     const where: any = {};
 
@@ -63,7 +63,7 @@ export const getShops = asyncHandler(async (req: Request, res: Response) => {
 
     const total = await prisma.shop.count({ where });
 
-    successResponse(res, {
+    return successResponse(res, {
         shops,
         pagination: {
             page: Number(page),
@@ -116,7 +116,7 @@ export const getShopById = asyncHandler(async (req: Request, res: Response) => {
         return errorResponse(res, 'Shop not found', 404);
     }
 
-    successResponse(res, shop);
+    return successResponse(res, shop);
 });
 
 // Get shop products
@@ -167,7 +167,7 @@ export const getShopProducts = asyncHandler(async (req: Request, res: Response) 
 
     const total = await prisma.product.count({ where });
 
-    successResponse(res, {
+    return successResponse(res, {
         products,
         pagination: {
             page: Number(page),
@@ -227,7 +227,7 @@ export const createShop = asyncHandler(async (req: Request, res: Response) => {
         },
     });
 
-    successResponse(res, shop, 'Shop created successfully', 201);
+    return successResponse(res, shop, 'Shop created successfully', 201);
 });
 
 // Update shop details
@@ -263,7 +263,7 @@ export const updateShop = asyncHandler(async (req: Request, res: Response) => {
         data,
     });
 
-    successResponse(res, updatedShop, 'Shop updated successfully');
+    return successResponse(res, updatedShop, 'Shop updated successfully');
 });
 
 // Get shop statistics
@@ -444,5 +444,5 @@ export const getShopStats = asyncHandler(async (req: Request, res: Response) => 
         peakHours: peakHoursData,
     };
 
-    successResponse(res, stats);
+    return successResponse(res, stats);
 });

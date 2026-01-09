@@ -29,7 +29,7 @@ export const getCategories = asyncHandler(async (req: Request, res: Response) =>
         },
     });
 
-    successResponse(res, categories);
+    return successResponse(res, categories);
 });
 
 // Get category by ID
@@ -59,7 +59,7 @@ export const getCategoryById = asyncHandler(async (req: Request, res: Response) 
         return errorResponse(res, 'Category not found', 404);
     }
 
-    successResponse(res, category);
+    return successResponse(res, category);
 });
 
 // Get all products
@@ -119,7 +119,7 @@ export const getProducts = asyncHandler(async (req: Request, res: Response) => {
 
     const total = await prisma.product.count({ where });
 
-    successResponse(res, {
+    return successResponse(res, {
         products,
         pagination: {
             page: Number(page),
@@ -161,7 +161,7 @@ export const getProductById = asyncHandler(async (req: Request, res: Response) =
         return errorResponse(res, 'Product not found', 404);
     }
 
-    successResponse(res, product);
+    return successResponse(res, product);
 });
 
 // Create product
@@ -211,7 +211,7 @@ export const createProduct = asyncHandler(async (req: Request, res: Response) =>
         },
     });
 
-    successResponse(res, product, 'Product created successfully', 201);
+    return successResponse(res, product, 'Product created successfully', 201);
 });
 
 // Update product
@@ -257,7 +257,7 @@ export const updateProduct = asyncHandler(async (req: Request, res: Response) =>
         },
     });
 
-    successResponse(res, updatedProduct, 'Product updated successfully');
+    return successResponse(res, updatedProduct, 'Product updated successfully');
 });
 
 // Delete product
@@ -288,5 +288,5 @@ export const deleteProduct = asyncHandler(async (req: Request, res: Response) =>
         where: { id },
     });
 
-    successResponse(res, null, 'Product deleted successfully');
+    return successResponse(res, null, 'Product deleted successfully');
 });

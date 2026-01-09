@@ -6,9 +6,16 @@ import { asyncHandler, successResponse, errorResponse } from '../utils/helpers';
 
 // Initialize Razorpay
 const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder', // User needs to set this
+    key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder',
     key_secret: process.env.RAZORPAY_KEY_SECRET || 'secret_placeholder',
 });
+
+interface RazorpayOrderOptions {
+    amount: number;
+    currency: string;
+    receipt: string;
+    notes?: Record<string, string>;
+}
 
 // Create Razorpay Order
 export const createPaymentOrder = asyncHandler(async (req: Request, res: Response) => {
@@ -30,18 +37,18 @@ export const createPaymentOrder = asyncHandler(async (req: Request, res: Respons
     // Razorpay expects amount in paise
     const amountInPaise = Math.round(order.total * 100);
 
-    const options = {
+    const options: RazorpayOrderOptions = {
         amount: amountInPaise,
         currency: 'INR',
         receipt: `receipt_order_${order.orderNumber}`,
         notes: {
             orderId: order.id,
-            userId: userId,
+            userId: userId || "",
         },
     };
 
     try {
-        const razorpayOrder = await razorpay.orders.create(options);
+        const razorpayOrder = await razorpay.orders.create(options as any);
 
         // Store Razorpay Order ID temporarily
         await prisma.order.update({

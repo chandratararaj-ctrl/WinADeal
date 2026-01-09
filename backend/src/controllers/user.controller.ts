@@ -76,7 +76,7 @@ export const getUsers = asyncHandler(async (req: Request, res: Response) => {
 
     const total = await prisma.user.count({ where });
 
-    successResponse(res, {
+    return successResponse(res, {
         users,
         pagination: {
             page: Number(page),
@@ -114,5 +114,5 @@ export const updateUserStatus = asyncHandler(async (req: Request, res: Response)
         }
     });
 
-    successResponse(res, user, 'User status updated successfully');
+    return successResponse(res, user, 'User status updated successfully');
 });

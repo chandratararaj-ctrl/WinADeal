@@ -32,15 +32,12 @@ export const registerDeliveryPartner = asyncHandler(async (req: Request, res: Re
         },
     });
 
-    // Update user role if needed? 
-    // Usually role update happens separately or we assume user registered as DELIVERY role.
-    // Let's ensure user role is DELIVERY.
     await prisma.user.update({
         where: { id: userId },
         data: { roles: ['DELIVERY'] },
     });
 
-    successResponse(res, partner, 'Delivery partner registration submitted', 201);
+    return successResponse(res, partner, 'Delivery partner registration submitted', 201);
 });
 
 // Get all delivery partners (Admin mostly)
@@ -72,7 +69,7 @@ export const getDeliveryPartners = asyncHandler(async (req: Request, res: Respon
 
     const total = await prisma.deliveryPartner.count({ where });
 
-    successResponse(res, {
+    return successResponse(res, {
         partners,
         pagination: {
             page: Number(page),
@@ -93,7 +90,7 @@ export const verifyDeliveryPartner = asyncHandler(async (req: Request, res: Resp
         data: { isVerified },
     });
 
-    successResponse(res, partner, 'Delivery partner verification status updated');
+    return successResponse(res, partner, 'Delivery partner verification status updated');
 });
 
 // Assign order to delivery partner
@@ -173,7 +170,7 @@ export const assignOrder = asyncHandler(async (req: Request, res: Response) => {
         payload: { orderId: order.id }
     });
 
-    successResponse(res, { delivery, order: updatedOrder }, 'Order assigned to delivery partner');
+    return successResponse(res, { delivery, order: updatedOrder }, 'Order assigned to delivery partner');
 });
 
 // Update Delivery Status (Order Status basically)
@@ -275,7 +272,7 @@ export const updateDeliveryStatus = asyncHandler(async (req: Request, res: Respo
         payload: { orderId: updatedOrder.id }
     });
 
-    successResponse(res, updatedOrder, 'Delivery status updated');
+    return successResponse(res, updatedOrder, 'Delivery status updated');
 });
 
 // Get My Deliveries (For logged-in partner)
@@ -326,7 +323,7 @@ export const getMyDeliveries = asyncHandler(async (req: Request, res: Response) 
             deliveries = allDeliveries.filter(d => d.order && historyStatuses.includes(d.order.status as string));
         }
 
-        successResponse(res, deliveries, 'Fetched my deliveries');
+        return successResponse(res, deliveries, 'Fetched my deliveries');
     } catch (error) {
         console.error("Error in getMyDeliveries:", error);
         return errorResponse(res, "Failed to fetch deliveries", 500, error);
@@ -343,7 +340,7 @@ export const toggleOnlineStatus = asyncHandler(async (req: Request, res: Respons
         data: { isOnline },
     });
 
-    successResponse(res, { isOnline: partner.isOnline }, `You are now ${partner.isOnline ? 'Online' : 'Offline'}`);
+    return successResponse(res, { isOnline: partner.isOnline }, `You are now ${partner.isOnline ? 'Online' : 'Offline'}`);
 });
 
 // New endpoint: delivery partner confirms delivery with code
@@ -380,5 +377,5 @@ export const confirmDelivery = asyncHandler(async (req: Request, res: Response) 
         status: updatedOrder.status,
         message: 'Order delivered successfully',
     });
-    successResponse(res, updatedOrder, 'Delivery confirmed');
+    return successResponse(res, updatedOrder, 'Delivery confirmed');
 });
