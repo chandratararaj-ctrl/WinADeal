@@ -21,7 +21,7 @@ export interface VerifyOTPData {
 
 export const authService = {
     register: async (data: RegisterData) => {
-        const response = await api.post('/api/v1/auth/register', {
+        const response = await api.post('/auth/register', {
             ...data,
             role: data.role || 'CUSTOMER',
         });
@@ -29,37 +29,37 @@ export const authService = {
     },
 
     login: async (data: LoginData) => {
-        const response = await api.post('/api/v1/auth/login', data);
+        const response = await api.post('/auth/login', data);
         return response.data;
     },
 
     verifyOTP: async (data: VerifyOTPData) => {
-        const response = await api.post('/api/v1/auth/verify-otp', data);
+        const response = await api.post('/auth/verify-otp', data);
         return response.data;
     },
 
     logout: async () => {
-        const response = await api.post('/api/v1/auth/logout');
+        const response = await api.post('/auth/logout');
         return response.data;
     },
 
     refreshToken: async (refreshToken: string) => {
-        const response = await api.post('/api/v1/auth/refresh', { refreshToken });
+        const response = await api.post('/auth/refresh', { refreshToken });
         return response.data;
     },
 
     requestOTP: async (phone: string) => {
-        const response = await api.post('/api/v1/auth/request-otp', { phone });
+        const response = await api.post('/auth/request-otp', { phone });
         return response.data;
     },
 
     resetPassword: async (data: { phone: string; otp: string; newPassword: string }) => {
-        const response = await api.post('/api/v1/auth/reset-password', data);
+        const response = await api.post('/auth/reset-password', data);
         return response.data;
     },
 
     switchRole: async (selectedRole: string) => {
-        const response = await api.post('/api/v1/auth/switch-role', { selectedRole });
+        const response = await api.post('/auth/switch-role', { selectedRole });
         return response.data;
     },
 };
