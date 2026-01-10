@@ -69,9 +69,10 @@ export default function Orders() {
     const fetchOrders = async (isBackground = false) => {
         try {
             if (!isBackground) setLoading(true);
-            const res = await orderService.getMyOrders();
+            const orders = await orderService.getMyOrders();
 
-            const fetchedOrders = (res.data?.orders || []).map((order: any) => {
+            // getMyOrders returns the orders array directly
+            const fetchedOrders = (Array.isArray(orders) ? orders : []).map((order: any) => {
                 return {
                     ...order,
                     items: order.orderItems.map((item: any) => ({
