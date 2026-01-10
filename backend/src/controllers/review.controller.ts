@@ -20,21 +20,32 @@ export const reviewController = {
                 targetId
             } = req.body;
 
+            console.log('[CreateReview] Request:', { orderId, userId, targetType, targetId, shopRating });
+
             if (!userId) {
                 return res.status(401).json({ message: 'Unauthorized' });
             }
 
-            // Verify order belongs to user and is delivered
+            // Verify order belongs to user
+            // Note: We allow review if order is DELIVERED. 
+            // If the frontend allows reviewing earlier (e.g. delivered but status not updated), we might relax this.
+            // For now, sticking to DELIVERED.
             const order = await prisma.order.findFirst({
                 where: {
                     id: orderId,
-                    customerId: userId,
-                    status: 'DELIVERED'
+                    customerId: userId
                 }
             });
 
             if (!order) {
-                return res.status(404).json({ message: 'Order not found or not eligible for review' });
+                console.error('[CreateReview] Order not found for user:', orderId, userId);
+                return res.status(404).json({ message: 'Order not found' });
+            }
+
+            if (order.status !== 'DELIVERED') {
+                console.error('[CreateReview] Order not delivered. Status:', order.status);
+                // Allow reviewing if it's practically delivered? For now, fail but with 400.
+                return res.status(400).json({ message: `Order status is ${order.status}, must be DELIVERED to review` });
             }
 
             // Check if review already exists
@@ -46,15 +57,25 @@ export const reviewController = {
                 return res.status(400).json({ message: 'Review already exists for this order' });
             }
 
+            // Safe calculation for overallRating
+            const ratings = [shopRating, productRating, deliveryRating].filter(r => r !== undefined && r !== null && typeof r === 'number');
+            const calculatedOverall = ratings.length > 0
+                ? Math.round(ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length)
+                : (shopRating || 0);
+
+            const finalOverallRating = overallRating || calculatedOverall;
+
+            console.log('[CreateReview] Creating review with overall rating:', finalOverallRating);
+
             // Create review
             const review = await prisma.review.create({
                 data: {
                     orderId,
                     userId,
-                    shopRating,
-                    productRating,
-                    deliveryRating,
-                    overallRating: overallRating || Math.round((shopRating + productRating + deliveryRating) / 3),
+                    shopRating: shopRating,
+                    productRating: productRating,
+                    deliveryRating: deliveryRating,
+                    overallRating: finalOverallRating,
                     comment,
                     images: images || [],
                     targetType,
@@ -70,20 +91,22 @@ export const reviewController = {
                 }
             });
 
-            // Update shop rating if it's a shop review
-            if (targetType === 'shop') {
-                await updateShopRating(targetId);
-            }
-
-            // Update delivery partner rating if it's a delivery review
-            if (targetType === 'delivery') {
-                await updateDeliveryPartnerRating(targetId);
+            // Update metrics asynchronously (don't fail request if this fails)
+            try {
+                if (targetType === 'shop') {
+                    await updateShopRating(targetId);
+                } else if (targetType === 'delivery') {
+                    await updateDeliveryPartnerRating(targetId);
+                }
+            } catch (metricError) {
+                console.error('[CreateReview] Failed to update metrics:', metricError);
+                // Continue, don't crash
             }
 
             res.status(201).json(review);
         } catch (error) {
-            console.error('Error creating review:', error);
-            res.status(500).json({ message: 'Failed to create review' });
+            console.error('[CreateReview] Error creating review:', error);
+            res.status(500).json({ message: 'Failed to create review', error: String(error) });
         }
     },
 
