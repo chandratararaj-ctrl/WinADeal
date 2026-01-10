@@ -59,7 +59,7 @@ export const orderService = {
         limit?: number;
     }) => {
         const response = await api.get('/orders', { params });
-        return response.data.data;
+        return response.data.data.orders || response.data.data || [];
     },
 
     // Get order by ID
