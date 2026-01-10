@@ -1,7 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import { manualCorsMiddleware } from './middleware/manual-cors.middleware';
 
 // Load environment variables
 dotenv.config();
@@ -13,40 +13,9 @@ const PORT = process.env.PORT || 5000;
 // MIDDLEWARE
 // ============================================
 
-// CORS configuration - Simplified for Coolify deployment
-// Allow all sslip.io domains and localhost
-app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps, Postman, curl)
-        if (!origin) {
-            return callback(null, true);
-        }
-
-        // Log all CORS requests for debugging
-        console.log(`[CORS] Request from: ${origin}`);
-
-        // Allow localhost in any environment (development or production)
-        if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-            console.log(`[CORS] ✅ Allowed (localhost): ${origin}`);
-            return callback(null, true);
-        }
-
-        // Allow ALL sslip.io domains (Coolify auto-generated domains)
-        if (origin.includes('.sslip.io')) {
-            console.log(`[CORS] ✅ Allowed (sslip.io): ${origin}`);
-            return callback(null, true);
-        }
-
-        // If we reach here, the origin is not allowed
-        console.error(`[CORS] ❌ Blocked: ${origin}`);
-        return callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Length', 'X-Request-Id'],
-    maxAge: 86400, // 24 hours
-}));
+// Manual CORS Middleware - Sets headers directly on response
+// This bypasses any issues with reverse proxy or the cors package
+app.use(manualCorsMiddleware);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
