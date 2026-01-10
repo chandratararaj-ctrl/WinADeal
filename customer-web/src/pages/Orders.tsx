@@ -68,11 +68,17 @@ export default function Orders() {
 
     const fetchOrders = async (isBackground = false) => {
         try {
+            console.log('[Orders] fetchOrders called, isBackground:', isBackground);
             if (!isBackground) setLoading(true);
+
             const orders = await orderService.getMyOrders();
+            console.log('[Orders] getMyOrders returned:', orders);
+            console.log('[Orders] Is array?', Array.isArray(orders));
+            console.log('[Orders] Length:', orders?.length);
 
             // getMyOrders returns the orders array directly
             const fetchedOrders = (Array.isArray(orders) ? orders : []).map((order: any) => {
+                console.log('[Orders] Mapping order:', order.id, order.orderNumber);
                 return {
                     ...order,
                     items: order.orderItems.map((item: any) => ({
@@ -90,9 +96,11 @@ export default function Orders() {
                 };
             });
 
+            console.log('[Orders] fetchedOrders:', fetchedOrders);
+            console.log('[Orders] Setting orders state with', fetchedOrders.length, 'orders');
             setOrders(fetchedOrders);
         } catch (error) {
-            console.error('Failed to fetch orders:', error);
+            console.error('[Orders] Failed to fetch orders:', error);
         } finally {
             if (!isBackground) setLoading(false);
         }
