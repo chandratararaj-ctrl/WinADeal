@@ -13,45 +13,39 @@ const PORT = process.env.PORT || 5000;
 // MIDDLEWARE
 // ============================================
 
-// CORS configuration
+// CORS configuration - Simplified for Coolify deployment
+// Allow all sslip.io domains and localhost
 app.use(cors({
-    origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-
-        // Log the origin for debugging (only in development)
-        if (process.env.NODE_ENV === 'development') {
-            console.log(`[CORS] Request from origin: ${origin}`);
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, Postman, curl)
+        if (!origin) {
+            return callback(null, true);
         }
 
-        // In development, allow all localhost origins
-        if (process.env.NODE_ENV === 'development') {
-            if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
-                return callback(null, true);
-            }
+        // Log all CORS requests for debugging
+        console.log(`[CORS] Request from: ${origin}`);
+
+        // Allow localhost in any environment (development or production)
+        if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+            console.log(`[CORS] ✅ Allowed (localhost): ${origin}`);
+            return callback(null, true);
         }
 
-        // In production, allow specific origins and all sslip.io domains
-        const allowedOrigins = [
-            process.env.ADMIN_PANEL_URL || 'http://localhost:3000',
-            process.env.CUSTOMER_WEB_URL || 'http://localhost:3001',
-            process.env.VENDOR_PANEL_URL || 'http://localhost:5174',
-            process.env.DELIVERY_PANEL_URL || 'http://localhost:5177',
-            'http://localhost:5173', // Local fallback
-        ];
-
-        // Allow all sslip.io domains (Coolify generated domains)
-        // OR domains in allowedOrigins list
-        if (origin.includes('.sslip.io') || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            console.error(`[CORS] Blocked request from origin: ${origin}`);
-            callback(new Error('Not allowed by CORS'));
+        // Allow ALL sslip.io domains (Coolify auto-generated domains)
+        if (origin.includes('.sslip.io')) {
+            console.log(`[CORS] ✅ Allowed (sslip.io): ${origin}`);
+            return callback(null, true);
         }
+
+        // If we reach here, the origin is not allowed
+        console.error(`[CORS] ❌ Blocked: ${origin}`);
+        return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'X-Request-Id'],
+    maxAge: 86400, // 24 hours
 }));
 
 // Body parsing middleware
