@@ -19,6 +19,11 @@ app.use(cors({
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
+        // Log the origin for debugging (only in development)
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`[CORS] Request from origin: ${origin}`);
+        }
+
         // In development, allow all localhost origins
         if (process.env.NODE_ENV === 'development') {
             if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:')) {
@@ -26,18 +31,21 @@ app.use(cors({
             }
         }
 
-        // In production, only allow specific origins
+        // In production, allow specific origins and all sslip.io domains
         const allowedOrigins = [
             process.env.ADMIN_PANEL_URL || 'http://localhost:3000',
             process.env.CUSTOMER_WEB_URL || 'http://localhost:3001',
-            process.env.VENDOR_PANEL_URL || 'http://localhost:5174', // Vendor Panel
-            'http://localhost:5173', // Delivery App or Local Fallback
+            process.env.VENDOR_PANEL_URL || 'http://localhost:5174',
+            process.env.DELIVERY_PANEL_URL || 'http://localhost:5177',
+            'http://localhost:5173', // Local fallback
         ];
 
-        // Allow sslip.io domains (Coolify generated domains)
-        if (origin.endsWith('.sslip.io') || allowedOrigins.includes(origin)) {
+        // Allow all sslip.io domains (Coolify generated domains)
+        // OR domains in allowedOrigins list
+        if (origin.includes('.sslip.io') || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.error(`[CORS] Blocked request from origin: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
