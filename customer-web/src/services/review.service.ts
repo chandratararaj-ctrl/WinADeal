@@ -35,7 +35,7 @@ export interface Review {
 export const reviewService = {
     // Create new review
     createReview: async (data: CreateReviewData) => {
-        const response = await api.post('/api/v1/reviews', data);
+        const response = await api.post('/reviews', data);
         return response.data;
     },
 
@@ -47,13 +47,13 @@ export const reviewService = {
 
     // Get shop reviews
     getShopReviews: async (shopId: string) => {
-        const response = await api.get(`/api/v1/reviews/shop/${shopId}`);
+        const response = await api.get(`/reviews/shop/${shopId}`);
         return response.data;
     },
 
     // Mark review as helpful
     markHelpful: async (reviewId: string, helpful: boolean) => {
-        const response = await api.post(`/api/v1/reviews/${reviewId}/helpful`, { helpful });
+        const response = await api.post(`/reviews/${reviewId}/helpful`, { helpful });
         return response.data;
     }
 };

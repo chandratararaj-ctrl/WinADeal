@@ -48,7 +48,7 @@ export interface Order {
 export const orderService = {
     // Create new order
     createOrder: async (data: CreateOrderData) => {
-        const response = await api.post('/api/v1/orders', data);
+        const response = await api.post('/orders', data);
         return response.data;
     },
 
@@ -106,19 +106,19 @@ export const addressService = {
         longitude?: number;
         isDefault?: boolean;
     }) => {
-        const response = await api.post('/api/v1/addresses', data);
+        const response = await api.post('/addresses', data);
         return response.data;
     },
 
     // Update address
     updateAddress: async (id: string, data: any) => {
-        const response = await api.patch(`/api/v1/addresses/${id}`, data);
+        const response = await api.patch(`/addresses/${id}`, data);
         return response.data;
     },
 
     // Delete address
     deleteAddress: async (id: string) => {
-        const response = await api.delete(`/api/v1/addresses/${id}`);
+        const response = await api.delete(`/addresses/${id}`);
         return response.data;
     },
 };
